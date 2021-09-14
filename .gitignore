@@ -1,0 +1,6 @@
+build
+*.zip
+include/jackal
+*.elf
+*.nds
+JackalDS.xcodeproj/project.xcworkspace/xcuserdata

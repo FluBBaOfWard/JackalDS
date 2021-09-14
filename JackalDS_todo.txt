@@ -1,0 +1,24 @@
+JackalDS To do
+---------------
+
+
+
+Misc:
+
+
+Grafik:
+	Scaled sprites are showing at the bottom of the screen.
+	See K005849_todo.txt
+
+CPU:
+	Sensitive to timing?
+
+GUI:
+	Test dip switches.
+	Show Coin counter.
+
+Sound:
+	Add YM2151 emulation?
+
+Games:
+	Fix gfx memory layout for bootlegs.

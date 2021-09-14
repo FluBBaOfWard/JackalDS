@@ -1,0 +1,25 @@
+JackalDS revision history
+-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+V0.2.3 - 2021-03-26 (FluBBa)
+	Added all games.
+
+V0.2.2 - 2021-03-23 (FluBBa)
+	Fixed help page.
+	Fixed dipswitches.
+	Added load/save state.
+
+V0.1.2 - 2020-06-08 (FluBBa)
+	Added support for flipped sprites.
+
+V0.1.1 - 2018-05-10 (FluBBa)
+	Fixed unscaled mode.
+	Added flipped background support.
+	Code clean up.
+
+V0.1.0 - 2018-04-20 (FluBBa)
+	Can play Jackal.
+
+V0.0.0 - 2017-01-08 (FluBBa)
+	Started coding.
