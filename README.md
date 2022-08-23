@@ -1,4 +1,4 @@
-# JackalDS V0.2.3
+# JackalDS V0.2.4
 
 This is a Jackal - Arcade emulator for the NDS.
 It has bugs in the sprite rendering and no tile priority support.
@@ -6,7 +6,7 @@ You should still be able to enjoy the game though. =)
 
 ## How to use:
 
-First DLDI patch the emulator for your flashcard.
+Depending on your flashcart you might have to DLDI patch the emulator.
 Create a folder named "acds" in either the root of your flash card or in the
 data folder. Now put jackal.zip into a folder where you have arcade roms.
 

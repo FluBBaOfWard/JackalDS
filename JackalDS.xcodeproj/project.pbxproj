@@ -157,7 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				9C7BB94C25FCDB7200EA9C9C /* graphics */,
-				A4D0E115208938B700401463 /* unzip */,
+				A4D0E115208938B700401463 /* Unzip */,
 				9CBEE0FD26F0FB9B0095347A /* README.md */,
 				9C8F33EF248ACA7C00996E5A /* nds_asm.h */,
 				9CBEE0FC26F0FB9A0095347A /* EmuSettings.h */,
@@ -219,7 +219,7 @@
 			path = YM2151;
 			sourceTree = "<group>";
 		};
-		A4D0E115208938B700401463 /* unzip */ = {
+		A4D0E115208938B700401463 /* Unzip */ = {
 			isa = PBXGroup;
 			children = (
 				A4D0E117208938B700401463 /* puff.h */,
@@ -227,7 +227,7 @@
 				A4D0E118208938B700401463 /* unzipnds.h */,
 				A4D0E116208938B700401463 /* unzipnds.c */,
 			);
-			path = unzip;
+			path = Unzip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,7 +288,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVKITARM = $DEVKITPRO/devkitarm;
-				DEVKITPRO = /opt/devkitpro_old;
+				DEVKITPRO = /opt/devkitpro;
 				PRODUCT_NAME = JackalDS;
 			};
 			name = Debug;
