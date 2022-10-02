@@ -6,8 +6,8 @@
 
 #define CYCLE_PSL (99)
 
-	.global cpuReset
 	.global run
+	.global cpuReset
 	.global frameTotal
 	.global waitMaskIn
 	.global waitMaskOut
@@ -76,7 +76,7 @@ DDCPU0End:
 	bne konamiFrameLoop
 
 ;@--------------------------------------
-	ldr r0,=g_gammaValue
+	ldr r0,=gGammaValue
 	ldrb r0,[r0]
 	bl paletteInit
 	bl paletteTxAll
@@ -140,7 +140,7 @@ cpu1SetNMI:
 */
 ;@----------------------------------------------------------------------------
 cyclesPerScanline:	.long 0
-frameTotal:			.long 0		;@ Let ui.c see frame count for savestates
+frameTotal:			.long 0		;@ Let Gui.c see frame count for savestates
 waitCountIn:		.byte 0
 waitMaskIn:			.byte 0
 waitCountOut:		.byte 0

@@ -30,7 +30,7 @@ void unpackState(const void *statePtr) {
 	size += k005849LoadState(&k005885_0, statePtr+size);
 	size += m6809LoadState(&m6809CPU1, statePtr+size);
 	m6809LoadState(&m6809OpTable, statePtr+size);
-	paletteInit(g_gammaValue);
+	paletteInit(gGammaValue);
 	paletteTxAll();
 }
 
@@ -73,75 +73,75 @@ int getRamSize() {
 }
 
 static const ArcadeRom jackalRoms[9] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"631_v02.15d", 0x10000, 0x0b7e0584},
 	{"631_v03.16d", 0x4000, 0x3e0dfb83},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"631_t01.11d", 0x8000, 0xb189af6a},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	{"631t04.7h",  0x20000, 0x457f42f0},
 	{"631t05.8h",  0x20000, 0x732b3fc1},
 	{"631t06.12h", 0x20000, 0x2d10e56e},
 	{"631t07.13h", 0x20000, 0x4961c397},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"631r08.9h",  0x0100, 0x7553a172},
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
 static const ArcadeRom jackalrRoms[9] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"631_q02.15d", 0x10000, 0xed2a7d66},
 	{"631_q03.16d", 0x4000, 0xb9d34836},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"631_q01.11d", 0x8000, 0x54aa2d29},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	{"631t04.7h",  0x20000, 0x457f42f0},
 	{"631t05.8h",  0x20000, 0x732b3fc1},
 	{"631t06.12h", 0x20000, 0x2d10e56e},
 	{"631t07.13h", 0x20000, 0x4961c397},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"631r08.9h",  0x0100, 0x7553a172},
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
 static const ArcadeRom topgunrRoms[9] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"631_u02.15d", 0x10000, 0xf7e28426},
 	{"631_u03.16d", 0x4000, 0xc086844e},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"631_t01.11d", 0x8000, 0xb189af6a},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	{"631u04.7h",  0x20000, 0x50122a12},
 	{"631u05.8h",  0x20000, 0x6943b1a4},
 	{"631u06.12h", 0x20000, 0x37dbbdb0},
 	{"631u07.13h", 0x20000, 0x22effcc8},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"631r08.9h",  0x0100, 0x7553a172},
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
 static const ArcadeRom jackaljRoms[9] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"631_t02.15d", 0x10000, 0x14db6b1a},
 	{"631_t03.16d", 0x4000, 0xfd5f9624},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"631_t01.11d", 0x8000, 0xb189af6a},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	{"631t04.7h",  0x20000, 0x457f42f0},
 	{"631t05.8h",  0x20000, 0x732b3fc1},
 	{"631t06.12h", 0x20000, 0x2d10e56e},
 	{"631t07.13h", 0x20000, 0x4961c397},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"631r08.9h",  0x0100, 0x7553a172},
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
 static const ArcadeRom jackalblRoms[22] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"epr-a-3.bin", 0x8000, 0x5fffee27},
 	{"epr-a-4.bin", 0x8000, 0x976c8431},
 	{"epr-a-2.bin", 0x4000, 0xae2a290a},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"epr-a-1.bin", 0x8000, 0x54aa2d29},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	/* same data, different layout */
@@ -161,26 +161,26 @@ static const ArcadeRom jackalblRoms[22] = {
 	{"epr-a-10.bin", 0x08000, 0x0aed6cd7},
 	{"epr-a-11.bin", 0x08000, 0xa48e9f60},
 	{"epr-a-12.bin", 0x08000, 0x79b7c71c},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"n82s129n.prom2", 0x0100, 0x7553a172},
 	{"n82s129n.prom1", 0x0100, 0xa74dd86c},
-	// ROM_REGION( 0x1000, "pals", 0 ) /* currently not used by the emulation */
+	// ROM_REGION( 0x1000, "pals", 0 )     // currently not used by the emulation
 //	{"pal16r6cn.pal1",     0x0104, 0x9bba948f},
 //	{"ampal16l8pc.pal2",   0x0104, 0x17c9de2f},
 //	{"ampal16r4pc.pal3",   0x0104, 0xe54cd288},
 //	{"pal16r8acn.pal4",    0x0104, 0x5cc45e00},
-//	{"pal20l8a-2cns.pal5", 0x0144, NO_DUMP ) // read protected
-//	{"pal20l8acns.pal6",   0x0144, NO_DUMP ) // read protected
+//	{"pal20l8a-2cns.pal5", 0x0144, NO_DUMP ) // Read protected
+//	{"pal20l8acns.pal6",   0x0144, NO_DUMP ) // Read protected
 //	{"pal16l8pc.pal7",     0x0104, 0xe8cdc259},
-//	{"d5c121.ep1200",      0x0200, NO_DUMP ) // not dumped yet
+//	{"d5c121.ep1200",      0x0200, NO_DUMP ) // Not dumped yet
 };
 
 static const ArcadeRom topgunblRoms[22] = {
-	// ROM_REGION( 0x20000, "master", 0 )  /* Banked 64k for 1st CPU */
+	// ROM_REGION( 0x20000, "master", 0 )  // Banked 64k for 1st CPU
 	{"t-3.c5", 0x8000, 0x7826ad38},
 	{"t-4.c4", 0x8000, 0x976c8431},
 	{"t-2.c6", 0x4000, 0xd53172e5},
-	// ROM_REGION( 0x10000, "slave", 0 )     /* 64k for 2nd cpu (Graphics & Sound)*/
+	// ROM_REGION( 0x10000, "slave", 0 )   // 64k for 2nd cpu (Graphics & Sound)
 	{"t-1.c14", 0x8000, 0x54aa2d29},
 	// ROM_REGION( 0x80000, "gfx1", 0 )
 	/* same data, different layout */
@@ -200,16 +200,16 @@ static const ArcadeRom topgunblRoms[22] = {
 	{"t-10.n5",  0x08000, 0x25393e4f},
 	{"t-11.n6",  0x08000, 0x7895c22d},
 	{"t-12.n7",  0x08000, 0x15606dfc},
-	// ROM_REGION( 0x0200, "proms", 0 )    /* color lookup tables */
+	// ROM_REGION( 0x0200, "proms", 0 )    // Color lookup tables
 	{"631r08.bpr", 0x0100, 0x7553a172},
 	{"631r09.bpr", 0x0100, 0xa74dd86c},
 };
 
-const ArcadeGame games[GAME_COUNT] = {
-	{"jackal",   "Jackal (World, 8-way Joystick)", 9, jackalRoms},
-	{"jackalr",  "Jackal (World, Rotary Joystick)", 9, jackalrRoms},
-	{"topgunr",  "Top Gunner (US, 8-way Joystick)", 9, topgunrRoms},
-	{"jackalj",  "Tokushu Butai Jackal (Japan, 8-way Joystick)", 9, jackaljRoms},
-	{"jackalbl", "Jackal (bootleg, Rotary Joystick)", 22, jackalblRoms},
-	{"topgunbl", "Top Gunner (bootleg, Rotary Joystick)", 22, topgunblRoms},
+const ArcadeGame jackalGames[GAME_COUNT] = {
+	AC_GAME("jackal",   "Jackal (World, 8-way Joystick)", jackalRoms)
+	AC_GAME("jackalr",  "Jackal (World, Rotary Joystick)", jackalrRoms)
+	AC_GAME("topgunr",  "Top Gunner (US, 8-way Joystick)", topgunrRoms)
+	AC_GAME("jackalj",  "Tokushu Butai Jackal (Japan, 8-way Joystick)", jackaljRoms)
+	AC_GAME("jackalbl", "Jackal (bootleg, Rotary Joystick)", jackalblRoms)
+	AC_GAME("topgunbl", "Top Gunner (bootleg, Rotary Joystick)", topgunblRoms)
 };

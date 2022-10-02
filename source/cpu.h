@@ -11,8 +11,8 @@ extern u8 waitMaskIn;
 extern u8 waitMaskOut;
 extern ARM6809Core m6809CPU1;
 
-void cpuReset(void);
 void run(void);
+void cpuReset(void);
 
 #ifdef __cplusplus
 } // extern "C"
