@@ -7,6 +7,7 @@
 #define CYCLE_PSL (99)
 
 	.global run
+	.global stepFrame
 	.global cpuReset
 	.global frameTotal
 	.global waitMaskIn
@@ -22,7 +23,7 @@
 	.section .text
 	.align 2
 ;@----------------------------------------------------------------------------
-run:		;@ Return after 1 frame
+run:						;@ Return after X frame(s)
 	.type   run STT_FUNC
 ;@----------------------------------------------------------------------------
 	ldrh r0,waitCountIn
@@ -56,15 +57,13 @@ konamiFrameLoop:
 ;@--------------------------------------
 	ldr m6809optbl,=m6809CPU1
 	mov r0,#CYCLE_PSL
-	b m6809RestoreAndRunXCycles
-DDCPU1End:
+	bl m6809RestoreAndRunXCycles
 	add r0,m6809optbl,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 ;@--------------------------------------
 	ldr m6809optbl,=m6809OpTable
 	mov r0,#CYCLE_PSL
-	b m6809RestoreAndRunXCycles
-DDCPU0End:
+	bl m6809RestoreAndRunXCycles
 	add r0,m6809optbl,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 ;@--------------------------------------
@@ -147,6 +146,46 @@ waitCountOut:		.byte 0
 waitMaskOut:		.byte 0
 
 ;@----------------------------------------------------------------------------
+stepFrame:						;@ Return after 1 frame
+	.type   stepFrame STT_FUNC
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r11,lr}
+
+;@--------------------------------------
+konamiStepLoop:
+;@--------------------------------------
+	ldr m6809optbl,=m6809CPU1
+	mov r0,#CYCLE_PSL
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809optbl,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr m6809optbl,=m6809OpTable
+	mov r0,#CYCLE_PSL
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809optbl,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr koptr,=k005885_1
+	bl doScanline
+	ldr koptr,=k005885_0
+	bl doScanline
+	cmp r0,#0
+	bne konamiStepLoop
+
+;@--------------------------------------
+	ldr r0,=gGammaValue
+	ldrb r0,[r0]
+	bl paletteInit
+	bl paletteTxAll
+
+	ldr r1,frameTotal
+	add r1,r1,#1
+	str r1,frameTotal
+
+	ldmfd sp!,{r4-r11,lr}
+	bx lr
+;@----------------------------------------------------------------------------
 cpuReset:		;@ Called by loadcart/resetGame
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
@@ -167,10 +206,7 @@ cpuReset:		;@ Called by loadcart/resetGame
 	adr r4,cpuMapData
 	bl mapMemory
 
-	adr r0,DDCPU0End
-	str r0,[m6809optbl,#m6809NextTimeout]
-	str r0,[m6809optbl,#m6809NextTimeout_]
-
+	mov r0,m6809optbl
 	bl m6809Reset
 
 ;@--------------------------------------
@@ -179,12 +215,8 @@ cpuReset:		;@ Called by loadcart/resetGame
 	adr r4,cpuMapData+8
 	bl mapMemory
 
-	adr r0,DDCPU1End
-	str r0,[m6809optbl,#m6809NextTimeout]
-	str r0,[m6809optbl,#m6809NextTimeout_]
-
+	mov r0,m6809optbl
 	bl m6809Reset
-
 
 	ldmfd sp!,{lr}
 	bx lr

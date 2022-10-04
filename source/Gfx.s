@@ -516,11 +516,11 @@ k005885_0R:					;@ I/O read, 0x0000-0x005F
 	cmp addy,#0x60
 	bpl mem6809R0
 	stmfd sp!,{addy,lr}
-//	ldrb r1,chipBank
-//	tst r1,#0x04
+	ldrb r1,chipBank
+	tst r1,#0x10
 	mov r1,addy
 	adr koptr,k005885_0
-//	adrne koptr,k005885_1
+	adrne koptr,k005885_1
 	bl k005885_R
 	ldmfd sp!,{addy,pc}
 
@@ -543,14 +543,14 @@ k005885_0W:					;@ I/O write  (0x0000-0x005F)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x60
 	bpl ram_W
-	stmfd sp!,{addy,lr}
-//	ldrb r1,chipBank
-//	tst r1,#0x04
+	stmfd sp!,{r0,addy,lr}
 	mov r1,addy
 	adr koptr,k005885_0
-//	adrne koptr,k005885_1
 	bl k005885_W
-	ldmfd sp!,{addy,pc}
+	ldmfd sp,{r0,r1}
+	adr koptr,k005885_1
+	bl k005885_W
+	ldmfd sp!,{r0,addy,pc}
 ;@----------------------------------------------------------------------------
 paletteRead:
 ;@----------------------------------------------------------------------------

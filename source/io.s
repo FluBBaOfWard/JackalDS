@@ -163,6 +163,7 @@ IO_W:						;@I/O write (0x0019,0x001C)
 	cmp addy,#0x0019
 	beq watchDogW
 	cmp addy,#0x001C
+	cmpne addy,#0x001E
 	beq coinW
 	b k005885_0W
 
