@@ -2,9 +2,10 @@ JackalDS revision history
 -=-=-=-=-=-=-=-=-=-=-=-=-
 
 
-V0.2.4 - 2022-10-04 (FluBBa)
+V0.2.4 - 2023-06-27 (FluBBa)
 	Fixed sprites when screen is flipped.
-	Cleaned up source.
+	Added new debug menu.
+	Better menu traversing.
 
 V0.2.3 - 2021-03-26 (FluBBa)
 	Added all games.
