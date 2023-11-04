@@ -19,7 +19,7 @@ int packState(void *statePtr) {
 	size += k005849SaveState(statePtr+size, &k005885_1);
 	size += k005849SaveState(statePtr+size, &k005885_0);
 	size += m6809SaveState(statePtr+size, &m6809CPU1);
-	size += m6809SaveState(statePtr+size, &m6809OpTable);
+	size += m6809SaveState(statePtr+size, &m6809CPU0);
 	return size;
 }
 
@@ -29,7 +29,7 @@ void unpackState(const void *statePtr) {
 	size += k005849LoadState(&k005885_1, statePtr+size);
 	size += k005849LoadState(&k005885_0, statePtr+size);
 	size += m6809LoadState(&m6809CPU1, statePtr+size);
-	m6809LoadState(&m6809OpTable, statePtr+size);
+	m6809LoadState(&m6809CPU0, statePtr+size);
 	paletteInit(gGammaValue);
 	paletteTxAll();
 }

@@ -60,7 +60,7 @@ machineInit: 	;@ Called from C
 	bl gfxInit
 //	bl ioInit
 	bl soundInit
-//	bl cpuInit
+	bl cpuInit
 
 	ldmfd sp!,{lr}
 	bx lr
@@ -168,8 +168,8 @@ initMappingPage:	;@ r0=page, r1=mem, r2=rdMem, r3=wrMem
 jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 2 banks.
 	.type   jackalMapper STT_FUNC
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r4,m6809optbl,lr}
-	ldr m6809optbl,=m6809OpTable
+	stmfd sp!,{r4,m6809ptr,lr}
+	ldr m6809ptr,=m6809CPU0
 
 	and r4,r0,#0x20
 	mov r4,r4,lsr#3
@@ -190,7 +190,7 @@ jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 2 banks.
 	mov r0,#0x20
 	bl m6809Mapper
 
-	ldmfd sp!,{r4,m6809optbl,lr}
+	ldmfd sp!,{r4,m6809ptr,lr}
 	bx lr
 ;@----------------------------------------------------------------------------
 m6809Mapper:		;@ Rom paging..
@@ -207,9 +207,9 @@ m6809Mapper:		;@ Rom paging..
 	cmp r1,#0xF9
 	movmi r5,#12
 
-	add r6,m6809optbl,#m6809ReadTbl
-	add r7,m6809optbl,#m6809WriteTbl
-	add r8,m6809optbl,#m6809MemTbl
+	add r6,m6809ptr,#m6809ReadTbl
+	add r7,m6809ptr,#m6809WriteTbl
+	add r8,m6809ptr,#m6809MemTbl
 	b m6809MemAps
 m6809MemApl:
 	add r6,r6,#4
