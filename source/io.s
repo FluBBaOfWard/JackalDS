@@ -5,8 +5,8 @@
 #include "Shared/EmuMenu.i"
 
 	.global ioReset
-	.global IO_R
-	.global IO_W
+	.global JackalIO_R
+	.global JackalIO_W
 	.global convertInput
 	.global refreshEMUjoypads
 
@@ -148,7 +148,7 @@ Input5_R:
 	bx lr
 
 ;@----------------------------------------------------------------------------
-IO_R:						;@ I/O read (0x0010-0x0018)
+JackalIO_R:					;@ I/O read (0x0010-0x0018)
 ;@----------------------------------------------------------------------------
 	subs r1,addy,#0x0010
 	bmi k005885_0R
@@ -168,7 +168,7 @@ IO_R:						;@ I/O read (0x0010-0x0018)
 	.long Input5_R				;@ 0x0018
 
 ;@----------------------------------------------------------------------------
-IO_W:						;@I/O write (0x0019,0x001C)
+JackalIO_W:					;@I/O write (0x0019,0x001C)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x0019
 	beq watchDogW

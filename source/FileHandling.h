@@ -9,6 +9,10 @@ extern "C" {
 
 #define FILEEXTENSIONS ".zip"
 
+#define GAME_COUNT (6)
+
+extern const ArcadeGame allGames[GAME_COUNT];
+
 int loadSettings(void);
 void saveSettings(void);
 int loadNVRAM(void);

@@ -73,8 +73,8 @@ int getRamSize() {
 	return sizeof(SHARE_RAM) + sizeof(k005885Palette) + 4;
 }
 
-static const ArcadeRom jackalRoms[13] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom jackalRoms[13] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"631_v02.15d", 0x10000, 0x0b7e0584},
 	{"631_v03.16d", 0x4000, 0x3e0dfb83},
 	{ROM_REGION,   0x10000, (int)&subCpu}, // 64k for 2nd cpu (Graphics & Sound)
@@ -89,8 +89,8 @@ static const ArcadeRom jackalRoms[13] = {
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
-static const ArcadeRom jackalrRoms[13] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom jackalrRoms[13] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"631_q02.15d", 0x10000, 0xed2a7d66},
 	{"631_q03.16d", 0x4000, 0xb9d34836},
 	{ROM_REGION,   0x10000, (int)&subCpu}, // 64k for 2nd cpu (Graphics & Sound)
@@ -105,8 +105,8 @@ static const ArcadeRom jackalrRoms[13] = {
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
-static const ArcadeRom topgunrRoms[13] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom topgunrRoms[13] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"631_u02.15d", 0x10000, 0xf7e28426},
 	{"631_u03.16d", 0x4000, 0xc086844e},
 	{ROM_REGION,   0x10000, (int)&subCpu}, // 64k for 2nd cpu (Graphics & Sound)
@@ -121,8 +121,8 @@ static const ArcadeRom topgunrRoms[13] = {
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
-static const ArcadeRom jackaljRoms[13] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom jackaljRoms[13] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"631_t02.15d", 0x10000, 0x14db6b1a},
 	{"631_t03.16d", 0x4000, 0xfd5f9624},
 	{ROM_REGION,   0x10000, (int)&subCpu}, // 64k for 2nd cpu (Graphics & Sound)
@@ -137,8 +137,8 @@ static const ArcadeRom jackaljRoms[13] = {
 	{"631r09.14h", 0x0100, 0xa74dd86c},
 };
 
-static const ArcadeRom jackalblRoms[26] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom jackalblRoms[26] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"epr-a-3.bin", 0x8000, 0x5fffee27},
 	{"epr-a-4.bin", 0x8000, 0x976c8431},
 	{"epr-a-2.bin", 0x4000, 0xae2a290a},
@@ -176,8 +176,8 @@ static const ArcadeRom jackalblRoms[26] = {
 //	{"d5c121.ep1200",      0x0200, NO_DUMP ) // Not dumped yet
 };
 
-static const ArcadeRom topgunblRoms[26] = {
-	{ROM_REGION,   0x20000, (int)&mainCpu},  // Banked 64k for 1st CPU
+const ArcadeRom topgunblRoms[26] = {
+	{ROM_REGION,   0x20000, (int)&mainCpu}, // Banked 64k for 1st CPU
 	{"t-3.c5", 0x8000, 0x7826ad38},
 	{"t-4.c4", 0x8000, 0x976c8431},
 	{"t-2.c6", 0x4000, 0xd53172e5},
@@ -206,7 +206,7 @@ static const ArcadeRom topgunblRoms[26] = {
 	{"631r09.bpr", 0x0100, 0xa74dd86c},
 };
 
-const ArcadeGame jackalGames[GAME_COUNT] = {
+const ArcadeGame jackalGames[JK_GAME_COUNT] = {
 	AC_GAME("jackal",   "Jackal (World, 8-way Joystick)", jackalRoms)
 	AC_GAME("jackalr",  "Jackal (World, Rotary Joystick)", jackalrRoms)
 	AC_GAME("topgunr",  "Top Gunner (US, 8-way Joystick)", topgunrRoms)

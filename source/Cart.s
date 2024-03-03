@@ -6,7 +6,6 @@
 
 	.global machineInit
 	.global loadCart
-	.global m6809Mapper
 	.global jackalMapper
 	.global emuFlags
 	.global romNum
@@ -80,7 +79,7 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	str r1,emuFlags
 
 //	ldr r7,=rawRom
-	ldr r7,=ROM_Space			;@ r7=rombase til end of loadcart so DON'T FUCK IT UP
+//	ldr r7,=ROM_Space
 //	str r7,romStart				;@ Set rom base
 //	add r0,r7,#0x1C000			;@ 0x14000
 //	str r0,vromBase0			;@ Gfx1
@@ -90,59 +89,9 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 //	str r0,promBase				;@ Colour prom
 
 ;@----------------------------------------------------------------------------
-	ldr r4,=MEMMAPTBL_
-	ldr r5,=RDMEMTBL_
-	ldr r6,=WRMEMTBL_
 
-	mov r0,#0
-	ldr r2,=mem6809R0
-	ldr r3,=rom_W
-tbLoop1:
-	add r1,r7,r0,lsl#13
-	bl initMappingPage
-	add r0,r0,#1
-	cmp r0,#0x88
-	bne tbLoop1
-
-	ldr r1,=emptySpace
-	ldr r2,=empty_R
-	ldr r3,=empty_W
-tbLoop3:
-	bl initMappingPage
-	add r0,r0,#1
-	cmp r0,#0x100
-	bne tbLoop3
-
-
-	mov r0,#0xF8				;@ RAM
-	ldr r1,=SHARE_RAM
-	ldr r2,=mem6809R0
-	ldr r3,=ram_W
-	bl initMappingPage
-
-	mov r0,#0xFC				;@ IO
-	ldr r1,=emptySpace
-	ldr r2,=YM0_R
-	ldr r3,=YM0_W
-	bl initMappingPage
-
-	mov r0,#0xFD				;@ Palette RAM
-	ldr r1,=k005885Palette
-	ldr r2,=paletteRead
-	ldr r3,=paletteWrite
-	bl initMappingPage
-
-	mov r0,#0xFE				;@ GFX RAM
-	ldr r1,=emuRAM0
-	ldr r2,=k005885Ram_0R
-	ldr r3,=k005885Ram_0W
-	bl initMappingPage
-
-	mov r0,#0xFF				;@ IO
-	ldr r1,=SHARE_RAM
-	ldr r2,=IO_R
-	ldr r3,=IO_W
-	bl initMappingPage
+	bl doCpuMappingJackalMain
+	bl doCpuMappingJackalSub
 
 	mov r0,r11					;@ Set r0 to gameNr
 	bl gfxReset
@@ -155,85 +104,87 @@ tbLoop3:
 
 
 ;@----------------------------------------------------------------------------
-initMappingPage:	;@ r0=page, r1=mem, r2=rdMem, r3=wrMem
-;@----------------------------------------------------------------------------
-	str r1,[r4,r0,lsl#2]
-	str r2,[r5,r0,lsl#2]
-	str r3,[r6,r0,lsl#2]
-	bx lr
-
-;@----------------------------------------------------------------------------
-//	.section itcm
-;@----------------------------------------------------------------------------
-
-;@----------------------------------------------------------------------------
 jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 2 banks.
 	.type   jackalMapper STT_FUNC
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r4,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
-
-	and r4,r0,#0x20
-	mov r4,r4,lsr#3
-
-	mov r1,r4
-	mov r0,#0x04
-	bl m6809Mapper
-
-	add r1,r4,#1
-	mov r0,#0x08
-	bl m6809Mapper
-
-	add r1,r4,#2
-	mov r0,#0x10
-	bl m6809Mapper
-
-	add r1,r4,#3
-	mov r0,#0x20
-	bl m6809Mapper
-
-	ldmfd sp!,{r4,m6809ptr,lr}
+	and r0,r0,#0x20
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	add r1,r1,r0,lsl#10
+	sub r1,r1,#0x4000
+	ldr r2,=m6809CPU0
+	str r1,[r2,#m6809MemTbl+4*2]
+	str r1,[r2,#m6809MemTbl+4*3]
+	str r1,[r2,#m6809MemTbl+4*4]
+	str r1,[r2,#m6809MemTbl+4*5]
 	bx lr
 ;@----------------------------------------------------------------------------
-m6809Mapper:		;@ Rom paging..
+doCpuMappingJackalMain:
 ;@----------------------------------------------------------------------------
-	ands r0,r0,#0xFF			;@ Safety
-	bxeq lr
-	stmfd sp!,{r3-r8,lr}
-	ldr r5,=MEMMAPTBL_
-	ldr r2,[r5,r1,lsl#2]!
-	ldr r3,[r5,#-1024]			;@ RDMEMTBL_
-	ldr r4,[r5,#-2048]			;@ WRMEMTBL_
+	adr r2,JackalMapping
+	b do6809MainCpuMapping
+;@----------------------------------------------------------------------------
+doCpuMappingJackalSub:
+;@----------------------------------------------------------------------------
+	adr r2,JackalSubMapping
+	ldr r0,=m6809CPU1
+	ldr r1,=subCpu
+	ldr r1,[r1]
+	b m6809Mapper
+;@----------------------------------------------------------------------------
+JackalMapping:						;@ Jackal
+	.long SHARE_RAM, JackalIO_R, JackalIO_W						;@ IO
+	.long emuRAM0, k005885Ram_0R, k005885Ram_0W					;@ Graphic
+	.long 0, mem6809R2, rom_W									;@ ROM
+	.long 1, mem6809R3, rom_W									;@ ROM
+	.long 2, mem6809R4, rom_W									;@ ROM
+	.long 3, mem6809R5, rom_W									;@ ROM
+	.long 8, mem6809R6, rom_W									;@ ROM
+	.long 9, mem6809R7, rom_W									;@ ROM
+;@----------------------------------------------------------------------------
+JackalSubMapping:					;@ Jackal sub cpu
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, YM0_R, YM0_W								;@ Sound
+	.long k005885Palette, paletteRead, paletteWrite				;@ Palette
+	.long SHARE_RAM, mem6809R3, ram_W							;@ RAM
+	.long 0, mem6809R4, rom_W									;@ ROM
+	.long 1, mem6809R5, rom_W									;@ ROM
+	.long 2, mem6809R6, rom_W									;@ ROM
+	.long 3, mem6809R7, rom_W									;@ ROM
 
-	mov r5,#0
-	cmp r1,#0xF9
-	movmi r5,#12
+;@----------------------------------------------------------------------------
+do6809MainCpuMapping:
+;@----------------------------------------------------------------------------
+	ldr r0,=m6809CPU0
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+;@----------------------------------------------------------------------------
+m6809Mapper:		;@ Rom paging.. r0=cpuptr, r1=romBase, r2=mapping table.
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r8,lr}
 
-	add r6,m6809ptr,#m6809ReadTbl
-	add r7,m6809ptr,#m6809WriteTbl
-	add r8,m6809ptr,#m6809MemTbl
-	b m6809MemAps
-m6809MemApl:
-	add r6,r6,#4
-	add r7,r7,#4
-	add r8,r8,#4
-m6809MemAp2:
-	add r3,r3,r5
-	sub r2,r2,#0x2000
-m6809MemAps:
-	movs r0,r0,lsr#1
-	bcc m6809MemApl				;@ C=0
-	strcs r3,[r6],#4			;@ readmem_tbl
-	strcs r4,[r7],#4			;@ writemem_tb
-	strcs r2,[r8],#4			;@ memmap_tbl
-	bne m6809MemAp2
+	add r7,r0,#m6809MemTbl
+	add r8,r0,#m6809ReadTbl
+	add lr,r0,#m6809WriteTbl
 
+	mov r6,#8
+m6809M2Loop:
+	ldmia r2!,{r3-r5}
+	cmp r3,#0x100
+	addmi r3,r1,r3,lsl#13
+	rsb r0,r6,#8
+	sub r3,r3,r0,lsl#13
+
+	str r3,[r7],#4
+	str r4,[r8],#4
+	str r5,[lr],#4
+	subs r6,r6,#1
+	bne m6809M2Loop
 ;@------------------------------------------
 m6809Flush:		;@ Update cpu_pc & lastbank
 ;@------------------------------------------
 //	reEncodePC
-
-	ldmfd sp!,{r3-r8,lr}
+	ldmfd sp!,{r4-r8,lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------
@@ -265,12 +216,6 @@ promBase:
 
 	.section .bss
 	.align 2
-WRMEMTBL_:
-	.space 256*4
-RDMEMTBL_:
-	.space 256*4
-MEMMAPTBL_:
-	.space 256*4
 SHARE_RAM:
 	.space 0x2000
 ROM_Space:

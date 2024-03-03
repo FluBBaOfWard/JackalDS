@@ -18,6 +18,15 @@ static const char *const settingName = "settings.cfg";
 ConfigData cfg;
 static int selectedGame = 0;
 
+const ArcadeGame allGames[GAME_COUNT] = {
+	AC_GAME("jackal",   "Jackal (World, 8-way Joystick)", jackalRoms)
+	AC_GAME("jackalr",  "Jackal (World, Rotary Joystick)", jackalrRoms)
+	AC_GAME("topgunr",  "Top Gunner (US, 8-way Joystick)", topgunrRoms)
+	AC_GAME("jackalj",  "Tokushu Butai Jackal (Japan, 8-way Joystick)", jackaljRoms)
+	AC_GAME("jackalbl", "Jackal (bootleg, Rotary Joystick)", jackalblRoms)
+	AC_GAME("topgunbl", "Top Gunner (bootleg, Rotary Joystick)", topgunblRoms)
+};
+
 //---------------------------------------------------------------------------------
 
 
@@ -103,7 +112,7 @@ void saveState() {
 
 //---------------------------------------------------------------------------------
 static bool loadRoms(int gameNr, bool doLoad) {
-	return loadACRoms(ROM_Space, jackalGames, gameNr, ARRSIZE(jackalGames), doLoad);
+	return loadACRoms(ROM_Space, allGames, gameNr, ARRSIZE(allGames), doLoad);
 }
 
 bool loadGame(int gameNr) {
@@ -115,7 +124,7 @@ bool loadGame(int gameNr) {
 	drawText(" Loading roms", 10, 0);
 	loadRoms(gameNr, true);
 	selectedGame = gameNr;
-	strlcpy(currentFilename, jackalGames[selectedGame].gameName, sizeof(currentFilename));
+	strlcpy(currentFilename, allGames[selectedGame].gameName, sizeof(currentFilename));
 	setEmuSpeed(0);
 	loadCart(gameNr,0);
 	if (emuSettings & AUTOLOAD_STATE) {
