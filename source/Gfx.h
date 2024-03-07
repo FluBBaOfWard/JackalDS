@@ -15,8 +15,8 @@ extern u8 gGfxMask;
 extern K005849 k005885_0;
 extern K005849 k005885_1;
 extern u8 k005885Palette[0x400];
-extern u8 chipBank;
 extern u16 EMUPALBUFF[0x200];
+extern u8 chipBank;
 
 void gfxInit(void);
 void vblIrqHandler(void);

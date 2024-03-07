@@ -7,7 +7,7 @@
 	.global empty_R
 	.global empty_W
 	.global rom_W
-	.global ram_W
+	.global sharedRAM_W
 	.global mem6809R0
 	.global mem6809R1
 	.global mem6809R2
@@ -70,16 +70,11 @@ rom_W:						;@ Write ROM address (error)
 #endif
 	.align 2
 ;@----------------------------------------------------------------------------
-ram_W:						;@ Ram write ($0060-$1FFF / $6000-$7FFF)
+sharedRAM_W:						;@ Ram write ($0060-$1FFF / $6000-$7FFF)
 ;@----------------------------------------------------------------------------
-//	mov r11,r11
 	bic r1,addy,#0xfe000
-	ldr r2,=SHARE_RAM
+	ldr r2,=SHARED_RAM
 	strb r0,[r2,r1]
-//	and r1,addy,#0xe000
-//	add r2,m6809ptr,#m6809MemTbl
-//	ldr r2,[r2,r1,lsr#11]			;@ r1=addy & 0xe000
-//	strb r0,[r2,addy]
 	bx lr
 
 ;@----------------------------------------------------------------------------

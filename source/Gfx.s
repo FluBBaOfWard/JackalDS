@@ -21,6 +21,10 @@
 
 	.global k005885_0
 	.global k005885_1
+	.global GFX_RAM0
+	.global GFX_RAM1
+	.global k005885Palette
+
 	.global k005885Ram_0R
 	.global k005885Ram_1R
 	.global k005885_0R
@@ -29,12 +33,9 @@
 	.global k005885Ram_1W
 	.global k005885_0W
 	.global k005885_1W
-	.global k005885Palette
 	.global paletteRead
 	.global paletteWrite
 	.global chipBank
-	.global emuRAM0
-	.global emuRAM1
 
 
 	.syntax unified
@@ -83,7 +84,6 @@ gfxReset:					;@ Called with CPU reset, In r0=gameNr
 	mov r0,#0
 	mov r1,#0
 	mov r2,#0
-	ldr r3,=emuRAM1
 	bl k005885Reset1
 	ldr r0,=Gfx2Bg				;@ Src bg tileset
 	str r0,[koptr,#bgrRomBase]
@@ -93,7 +93,6 @@ gfxReset:					;@ Called with CPU reset, In r0=gameNr
 	mov r0,#0
 	ldr r1,=cpusSetIRQ
 	mov r2,#0
-	ldr r3,=emuRAM0
 	bl k005885Reset0
 	ldr r0,=BG_GFX+0x4000		;@ Tile ram 0.5
 	str r0,[koptr,#bgrGfxDest]
@@ -494,11 +493,13 @@ oamBufferReady:		.long 0
 ;@----------------------------------------------------------------------------
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
+	ldr r3,=GFX_RAM0
 	adr koptr,k005885_0
 	b k005849Reset
 ;@----------------------------------------------------------------------------
 k005885Reset1:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
+	ldr r3,=GFX_RAM1
 	adr koptr,k005885_1
 	b k005849Reset
 ;@----------------------------------------------------------------------------
@@ -547,7 +548,7 @@ k005885Ram_0W:				;@ Ram write (0x2000-0x3FFF)
 k005885_0W:					;@ I/O write  (0x0000-0x005F)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x60
-	bpl ram_W
+	bpl sharedRAM_W
 	stmfd sp!,{r0,addy,lr}
 	mov r1,addy
 	adr koptr,k005885_0
@@ -613,11 +614,11 @@ EMUPALBUFF:
 	.space 0x400
 k005885Palette:
 	.space 0x400
-emuRAM0:
+GFX_RAM0:
 	.space 0x2000
 	.space SPRBLOCKCOUNT*4
 	.space BGBLOCKCOUNT*4
-emuRAM1:
+GFX_RAM1:
 	.space 0x2000
 	.space SPRBLOCKCOUNT*4
 	.space BGBLOCKCOUNT*4

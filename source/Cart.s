@@ -19,7 +19,7 @@
 	.global vromBase1
 	.global promBase
 
-	.global SHARE_RAM
+	.global SHARED_RAM
 	.global ROM_Space
 
 
@@ -104,7 +104,7 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 
 
 ;@----------------------------------------------------------------------------
-jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 2 banks.
+jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 4 banks.
 	.type   jackalMapper STT_FUNC
 ;@----------------------------------------------------------------------------
 	and r0,r0,#0x20
@@ -128,13 +128,12 @@ doCpuMappingJackalSub:
 ;@----------------------------------------------------------------------------
 	adr r2,JackalSubMapping
 	ldr r0,=m6809CPU1
-	ldr r1,=subCpu
-	ldr r1,[r1]
+	ldr r1,subCpu
 	b m6809Mapper
 ;@----------------------------------------------------------------------------
 JackalMapping:						;@ Jackal
-	.long SHARE_RAM, JackalIO_R, JackalIO_W						;@ IO
-	.long emuRAM0, k005885Ram_0R, k005885Ram_0W					;@ Graphic
+	.long SHARED_RAM, JackalIO_R, JackalIO_W					;@ IO
+	.long GFX_RAM0, k005885Ram_0R, k005885Ram_0W				;@ Graphic
 	.long 0, mem6809R2, rom_W									;@ ROM
 	.long 1, mem6809R3, rom_W									;@ ROM
 	.long 2, mem6809R4, rom_W									;@ ROM
@@ -146,7 +145,7 @@ JackalSubMapping:					;@ Jackal sub cpu
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, YM0_R, YM0_W								;@ Sound
 	.long k005885Palette, paletteRead, paletteWrite				;@ Palette
-	.long SHARE_RAM, mem6809R3, ram_W							;@ RAM
+	.long SHARED_RAM, mem6809R3, sharedRAM_W					;@ RAM
 	.long 0, mem6809R4, rom_W									;@ ROM
 	.long 1, mem6809R5, rom_W									;@ ROM
 	.long 2, mem6809R6, rom_W									;@ ROM
@@ -156,8 +155,7 @@ JackalSubMapping:					;@ Jackal sub cpu
 do6809MainCpuMapping:
 ;@----------------------------------------------------------------------------
 	ldr r0,=m6809CPU0
-	ldr r1,=mainCpu
-	ldr r1,[r1]
+	ldr r1,mainCpu
 ;@----------------------------------------------------------------------------
 m6809Mapper:		;@ Rom paging.. r0=cpuptr, r1=romBase, r2=mapping table.
 ;@----------------------------------------------------------------------------
@@ -216,7 +214,7 @@ promBase:
 
 	.section .bss
 	.align 2
-SHARE_RAM:
+SHARED_RAM:
 	.space 0x2000
 ROM_Space:
 	.space 0x9C200

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern u8 SHARE_RAM[0x2000];
+extern u8 SHARED_RAM[0x2000];
 extern u8 ROM_Space[0x9C200];
 extern u8 *mainCpu;
 extern u8 *subCpu;
