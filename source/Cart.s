@@ -90,8 +90,7 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 
 ;@----------------------------------------------------------------------------
 
-	bl doCpuMappingJackalMain
-	bl doCpuMappingJackalSub
+	bl doCpuMappingJackal
 
 	mov r0,r11					;@ Set r0 to gameNr
 	bl gfxReset
@@ -119,10 +118,12 @@ jackalMapper:				;@ Switch bank for 0x4000-0xBFFF, 4 banks.
 	str r1,[r2,#m6809MemTbl+4*5]
 	bx lr
 ;@----------------------------------------------------------------------------
-doCpuMappingJackalMain:
+doCpuMappingJackal:
 ;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
 	adr r2,JackalMapping
-	b do6809MainCpuMapping
+	bl do6809MainCpuMapping
+	ldmfd sp!,{lr}
 ;@----------------------------------------------------------------------------
 doCpuMappingJackalSub:
 ;@----------------------------------------------------------------------------
@@ -133,7 +134,7 @@ doCpuMappingJackalSub:
 ;@----------------------------------------------------------------------------
 JackalMapping:						;@ Jackal
 	.long SHARED_RAM, JackalIO_R, JackalIO_W					;@ IO
-	.long GFX_RAM0, k005885Ram_0R, k005885Ram_0W				;@ Graphic
+	.long GFX_RAM0, k005885Ram_0_1R, k005885Ram_0_1W			;@ Graphic
 	.long 0, mem6809R2, rom_W									;@ ROM
 	.long 1, mem6809R3, rom_W									;@ ROM
 	.long 2, mem6809R4, rom_W									;@ ROM

@@ -18,6 +18,7 @@
 	.global gGfxMask
 	.global vblIrqHandler
 	.global yStart
+	.global chipBank
 
 	.global k005885_0
 	.global k005885_1
@@ -25,17 +26,12 @@
 	.global GFX_RAM1
 	.global k005885Palette
 
-	.global k005885Ram_0R
-	.global k005885Ram_1R
-	.global k005885_0R
-	.global k005885_1R
-	.global k005885Ram_0W
-	.global k005885Ram_1W
-	.global k005885_0W
-	.global k005885_1W
+	.global k005885Ram_0_1R
+	.global k005885_0_1R
+	.global k005885Ram_0_1W
+	.global k005885_0_1W
 	.global paletteRead
 	.global paletteWrite
-	.global chipBank
 
 
 	.syntax unified
@@ -91,7 +87,7 @@ gfxReset:					;@ Called with CPU reset, In r0=gameNr
 	str r0,[koptr,#spriteRomBase]
 
 	mov r0,#0
-	ldr r1,=cpusSetIRQ
+	ldr r1,=cpu0SetIRQ_1SetNMI
 	mov r2,#0
 	bl k005885Reset0
 	ldr r0,=BG_GFX+0x4000		;@ Tile ram 0.5
@@ -353,6 +349,7 @@ vblIrqHandler:
 	movne r8,#0
 	add r8,r8,#0x10
 	mov r7,r8,lsl#16
+	orr r7,r7,#(GAME_WIDTH-SCREEN_WIDTH)/2
 
 	ldr r0,gFlicker
 	eors r0,r0,r0,lsl#31
@@ -374,7 +371,6 @@ scrolLoop2:
 	adc r8,r8,#1
 	subs r12,r12,#1
 	bne scrolLoop2
-
 
 
 	mov r6,#REG_BASE
@@ -503,49 +499,49 @@ k005885Reset1:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 	adr koptr,k005885_1
 	b k005849Reset
 ;@----------------------------------------------------------------------------
-k005885Ram_0R:				;@ Ram read (0x2000-0x3FFF)
+k005885Ram_0_1R:			;@ Ram read (0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{addy,lr}
 	ldrb r1,chipBank
 	tst addy,#0x1000
 	biceq r1,r1,#0x08
 	bicne r1,r1,#0x10
 	tst r1,#0x18
 	mov r1,addy
+	stmfd sp!,{addy,lr}
 	adreq koptr,k005885_0
 	adrne koptr,k005885_1
 	bl k005885Ram_R
 	ldmfd sp!,{addy,pc}
 ;@----------------------------------------------------------------------------
-k005885_0R:					;@ I/O read, 0x0000-0x005F
+k005885_0_1R:				;@ I/O read, 0x0000-0x005F
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x60
 	bpl mem6809R0
-	stmfd sp!,{addy,lr}
 	ldrb r1,chipBank
 	tst r1,#0x10
 	mov r1,addy
+	stmfd sp!,{addy,lr}
 	adr koptr,k005885_0
 	adrne koptr,k005885_1
 	bl k005885_R
 	ldmfd sp!,{addy,pc}
 
 ;@----------------------------------------------------------------------------
-k005885Ram_0W:				;@ Ram write (0x2000-0x3FFF)
+k005885Ram_0_1W:			;@ Ram write (0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{addy,lr}
 	ldrb r1,chipBank
 	tst addy,#0x1000
 	biceq r1,r1,#0x08
 	bicne r1,r1,#0x10
 	tst r1,#0x18
 	mov r1,addy
+	stmfd sp!,{addy,lr}
 	adreq koptr,k005885_0
 	adrne koptr,k005885_1
 	bl k005885Ram_W
 	ldmfd sp!,{addy,pc}
 ;@----------------------------------------------------------------------------
-k005885_0W:					;@ I/O write  (0x0000-0x005F)
+k005885_0_1W:				;@ I/O write  (0x0000-0x005F)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x60
 	bpl sharedRAM_W

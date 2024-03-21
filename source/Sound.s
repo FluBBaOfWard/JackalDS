@@ -69,9 +69,8 @@ VblSound2:					;@ r0=length, r1=pointer
 wavLoop:
 	ldrb r2,[r3],#1
 	mov r2,r2,lsl#8
-	orr r2,r2,r2,lsl#16
 	subs r12,r12,#1
-	strpl r2,[r1],#4
+	strhpl r2,[r1],#2
 	bhi wavLoop
 
 	ldmfd sp!,{lr}
@@ -82,7 +81,7 @@ silenceMix:
 	mov r12,r0
 	mov r2,#0
 silenceLoop:
-	subs r12,r12,#1
+	subs r12,r12,#2
 	strpl r2,[r1],#4
 	bhi silenceLoop
 

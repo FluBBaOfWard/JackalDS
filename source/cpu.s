@@ -6,18 +6,17 @@
 
 #define CYCLE_PSL (H_PIXEL_COUNT/2)
 
+	.global frameTotal
+	.global waitMaskIn
+	.global waitMaskOut
+	.global m6809CPU0
+	.global m6809CPU1
+
 	.global run
 	.global stepFrame
 	.global cpuInit
 	.global cpuReset
-	.global frameTotal
-	.global waitMaskIn
-	.global waitMaskOut
-	.global cpusSetIRQ
-
-	.global m6809CPU0
-	.global m6809CPU1
-
+	.global cpu0SetIRQ_1SetNMI
 
 	.syntax unified
 	.arm
@@ -127,15 +126,14 @@ jkFrameLoop:
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
-cpusSetIRQ:
+cpu0SetIRQ_1SetNMI:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r0,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
+	stmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU0
 	bl m6809SetIRQPin
-	ldmfd sp!,{r0}
-	ldr m6809ptr,=m6809CPU1
-	bl m6809SetNMIPin
-	ldmfd sp!,{m6809ptr,pc}
+	ldmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU1
+	b m6809SetNMIPin
 ;@----------------------------------------------------------------------------
 cpuInit:			;@ Called by machineInit
 ;@----------------------------------------------------------------------------

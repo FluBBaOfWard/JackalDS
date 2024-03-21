@@ -7,7 +7,6 @@ Misc:
 
 
 Grafik:
-	Scaled sprites are showing at the bottom of the screen.
 	See K005849_todo.txt
 
 CPU:

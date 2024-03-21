@@ -39,7 +39,7 @@ static const u8 guiPalette[] = {
 	0xED,0xED,0xED, 0xFF,0xFF,0xFF, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00,
 	0x00,0x00,0x00, 0x00,0x00,0x00, 0x70,0x70,0x20, 0x88,0x88,0x40, 0xA0,0xA0,0x60, 0xB8,0xB8,0x80, 0xD0,0xD0,0x90, 0xE8,0xE8,0xA0,
 	0xF7,0xF7,0xC0, 0xFF,0xFF,0xE0, 0x00,0x00,0x60, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00
-	};
+};
 
 //---------------------------------------------------------------------------------
 void myVblank(void) {
@@ -157,7 +157,7 @@ static void setupGraphics() {
 				 | DISPLAY_SPR_ACTIVE
 				 | DISPLAY_WIN0_ON
 				 );
-	REG_BG0CNT = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_PRIORITY(2);
+	REG_BG0CNT = BG_32x32 | BG_MAP_BASE(0) | BG_COLOR_256 | BG_TILE_BASE(1) | BG_PRIORITY(2);
 
 	// Set up the sub display
 	videoSetModeSub(MODE_0_2D
@@ -165,8 +165,8 @@ static void setupGraphics() {
 					| DISPLAY_BG1_ACTIVE
 					);
 	// Set up two backgrounds for menu
-	REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(0) | BG_PRIORITY(0);
-	REG_BG1CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(1) | BG_TILE_BASE(0) | BG_PRIORITY(0);
+	REG_BG0CNT_SUB = BG_32x32 | BG_MAP_BASE(0) | BG_COLOR_16 | BG_TILE_BASE(0) | BG_PRIORITY(0);
+	REG_BG1CNT_SUB = BG_32x32 | BG_MAP_BASE(1) | BG_COLOR_16 | BG_TILE_BASE(0) | BG_PRIORITY(0);
 	REG_BG1HOFS_SUB = 0;
 	REG_BG1VOFS_SUB = 0;
 	map0sub = BG_MAP_RAM_SUB(0);
@@ -187,7 +187,6 @@ static void setupStream(void) {
 	//----------------------------------------------------------------
 	// initialize maxmod without any soundbank (unusual setup)
 	//----------------------------------------------------------------
-//	mm_ds_system sys;
 	sys.mod_count 			= 0;
 	sys.samp_count			= 0;
 	sys.mem_bank			= 0;
@@ -197,12 +196,10 @@ static void setupStream(void) {
 	//----------------------------------------------------------------
 	// open stream
 	//----------------------------------------------------------------
-//	mm_stream myStream;
 	myStream.sampling_rate	= sample_rate;				// sampling rate =
 	myStream.buffer_length	= buffer_size;				// buffer length =
-//	myStream		= mix_sound;				// set callback function
 	myStream.callback		= VblSound2;				// set callback function
-	myStream.format			= MM_STREAM_16BIT_STEREO;	// format = stereo 16-bit
+	myStream.format			= MM_STREAM_16BIT_MONO;		// format = mono 16-bit
 	myStream.timer			= MM_TIMER0;				// use hardware timer 0
 	myStream.manual			= false;					// use manual filling
 	mmStreamOpen( &myStream );
